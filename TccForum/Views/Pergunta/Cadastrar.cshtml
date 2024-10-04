@@ -7,17 +7,17 @@
     <form asp-controller="Pergunta" asp-action="Cadastrar" method="post" enctype="multipart/form-data" accept="image/png">
         <h2>Criação de pergunta</h2>
         <div class="text-center">
-            <label for="imageFile">
-                <img id="img" style="width: 300px; height: 180px" />
+            <label for="arquivoDeImagem">
+                <img id="imagem" style="width: 300px; height: 180px" />
             </label>
         </div>
         <div class="mb-1">
             <label class="form-label mt-3">Capa:</label>
-            <input class="form-control shadow-none" type="file" id="imageFile" name="foto" />
+            <input class="form-control shadow-none" type="file" id="arquivoDeImagem" name="capaDaPergunta" />
         </div>
         <div class="mb-1">
             <label class="form-label mt-3">Título:</label>
-            <input class="form-control shadow-none" type="text" asp-for="Titulo"/>
+            <input class="form-control shadow-none" type="text" asp-for="Titulo" />
             <span class="text-danger" asp-validation-for="Titulo"></span>
         </div>
         <div class="mb-1">
@@ -31,3 +31,25 @@
         </div>
     </form>
 </div>
+
+<script>
+    const entradaDeArquivo = document.querySelector('#arquivoDeImagem')
+
+    entradaDeArquivo.addEventListener('change', function (e) {
+        const alvoDeEntrada = e.target
+        const arquivo = alvoDeEntrada.files[0]
+
+        if (arquivo) {
+            const leitor = new FileReader()
+
+            leitor.addEventListener('load', function (e) {
+                const alvoDoLeitor = e.target
+                const imagem = document.querySelector('#imagem')
+
+                imagem.src = alvoDoLeitor.result
+            })
+
+            leitor.readAsDataURL(arquivo)
+        }
+    })
+</script>

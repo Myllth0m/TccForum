@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TccForum.Data;
+using TccForum.Models.ViewModels;
 using TccForum.Services.Pergunta;
 
 namespace TccForum.Controllers
@@ -13,14 +13,25 @@ namespace TccForum.Controllers
             this.perguntaInterface = perguntaInterface;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var perguntas = await perguntaInterface.BuscarTodasAsPerguntas();
+            return View(perguntas);
         }
 
-        public IActionResult Cadastrar()
+        public IActionResult Cadastrar() => View();
+
+        [HttpPost]
+        public async Task<IActionResult> Cadastrar(PerguntaCriacaoViewModel perguntaViewModel, IFormFile capaDaPergunta)
         {
-            return View();
+            await perguntaInterface.CriarPergunta(perguntaViewModel, capaDaPergunta);
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Editar(int id)
+        {
+            var pergunta = await perguntaInterface.BuscarPerguntaPorId(id);
+            return View(pergunta);
         }
     }
 }

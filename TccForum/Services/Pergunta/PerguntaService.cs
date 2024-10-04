@@ -1,5 +1,5 @@
-﻿using TccForum.Data;
-using TccForum.Models.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using TccForum.Data;
 using TccForum.Models.ViewModels;
 
 namespace TccForum.Services.Pergunta
@@ -15,7 +15,30 @@ namespace TccForum.Services.Pergunta
             this.storage = storage.WebRootPath;
         }
 
-        public async Task<Models.Entities.Pergunta> CriarPergunta(PerguntaCriacaoViewModel perguntaViewModel, IFormFile capa)
+        private string GerarCaminhoDoArquivo(IFormFile capa)
+        {
+            var dataDaImagem = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "-");
+            var caminhoDaImagem = dataDaImagem + "-" + capa.FileName.Trim().Replace(" ", "").ToLower();
+            var pastaDeImagens = storage + "\\assets\\";
+
+            if (!Directory.Exists(pastaDeImagens))
+                Directory.CreateDirectory(pastaDeImagens);
+
+            using (var stream = File.Create(pastaDeImagens + caminhoDaImagem))
+            {
+                capa.CopyToAsync(stream).Wait();
+            }
+
+            return caminhoDaImagem;
+        }
+
+        public async Task<List<Models.Entities.Pergunta>> BuscarTodasAsPerguntas()
+        {
+            var perguntas = await contexto.Perguntas.ToListAsync();
+            return perguntas;
+        }
+
+        public async Task CriarPergunta(PerguntaCriacaoViewModel perguntaViewModel, IFormFile capa)
         {
             var caminhoDaImagem = GerarCaminhoDoArquivo(capa);
             var novaPergunta = new Models.Entities.Pergunta
@@ -28,25 +51,13 @@ namespace TccForum.Services.Pergunta
 
             contexto.Add(novaPergunta);
             await contexto.SaveChangesAsync();
-
-            return novaPergunta;
         }
 
-        private string GerarCaminhoDoArquivo(IFormFile capa)
+        public async Task<Models.Entities.Pergunta> BuscarPerguntaPorId(int id)
         {
-            var codigoUnico = Guid.NewGuid().ToString();
-            var caminhoDaImagem = capa.FileName.Replace(" ", "").ToLower() + codigoUnico + ".png";
-            var pastaDeImagens = storage + "\\assets\\";
-
-            if (!Directory.Exists(pastaDeImagens))
-                Directory.CreateDirectory(pastaDeImagens);
-
-            using (var stream = File.Create(pastaDeImagens + caminhoDaImagem))
-            {
-                capa.CopyToAsync(stream).Wait();
-            }
-
-            return caminhoDaImagem;
+            var pergunta = await contexto.Perguntas.FindAsync(id);
+            
+            return pergunta!;
         }
     }
 }
