@@ -176,6 +176,9 @@ DocProject/Help/*.hhp
 DocProject/Help/Html2
 DocProject/Help/html
 
+# Assests directory
+TccForum/wwwroot/assets/
+
 # Click-Once directory
 publish/
 
