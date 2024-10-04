@@ -1,7 +1,10 @@
 ﻿@model PerguntaCriacaoViewModel
+@{
+    ViewData["Title"] = "Criação de pergunta";
+}
 
 <div class="container mt-5">
-    <form asp-controller="Pergunta" asp-action="Cadastrar" method="post" enctype="multipart/form-data">
+    <form asp-controller="Pergunta" asp-action="Cadastrar" method="post" enctype="multipart/form-data" accept="image/png">
         <h2>Criação de pergunta</h2>
         <div class="text-center">
             <label for="imageFile">

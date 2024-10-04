@@ -13,6 +13,11 @@ namespace TccForum.Controllers
             this.perguntaInterface = perguntaInterface;
         }
 
+        public IActionResult Index()
+        {
+            return View();
+        }
+
         public IActionResult Cadastrar()
         {
             return View();

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TccForum.Data;
+using TccForum.Services.Pergunta;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +12,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-//interface
+builder.Services.AddScoped<IPerguntaInterface, PerguntaService>();
 
 var app = builder.Build();
 
