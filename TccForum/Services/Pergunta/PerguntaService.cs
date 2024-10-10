@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using TccForum.Data;
 using TccForum.Models.ViewModels;
 
@@ -58,6 +59,41 @@ namespace TccForum.Services.Pergunta
             var pergunta = await contexto.Perguntas.FindAsync(id);
             
             return pergunta!;
+        }
+
+        public async Task EditarPergunta(Models.Entities.Pergunta perguntaEditada, IFormFile capaDaPergunta)
+        {
+            var pergunta = await contexto.Perguntas.AsNoTracking().FirstAsync(x => x.Id == perguntaEditada.Id);
+            var caminhoDaImagem = string.Empty;
+
+            if (capaDaPergunta != null)
+            {
+                var capaDaPerguntaExistente = storage + "\\assets\\" + pergunta.Capa;
+
+                if (File.Exists(capaDaPerguntaExistente))
+                    File.Delete(capaDaPerguntaExistente);
+
+                caminhoDaImagem = GerarCaminhoDoArquivo(capaDaPergunta);
+            }
+
+            pergunta.Titulo = perguntaEditada.Titulo;
+            pergunta.Descricao = perguntaEditada.Descricao;
+
+            if (caminhoDaImagem != string.Empty)
+                pergunta.Capa = caminhoDaImagem;
+            else
+                pergunta.Capa = pergunta.Capa;
+
+            contexto.Perguntas.Update(pergunta);
+            await contexto.SaveChangesAsync();
+        }
+
+        public async Task RemoverPergunta(int id)
+        {
+            var pergunta = await contexto.Perguntas.AsNoTracking().FirstAsync(x => x.Id == id);
+
+            contexto.Perguntas.Remove(pergunta);
+            await contexto.SaveChangesAsync();
         }
     }
 }

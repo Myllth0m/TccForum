@@ -22,7 +22,9 @@ namespace TccForum.Controllers
         public IActionResult Cadastrar() => View();
 
         [HttpPost]
-        public async Task<IActionResult> Cadastrar(PerguntaCriacaoViewModel perguntaViewModel, IFormFile capaDaPergunta)
+        public async Task<IActionResult> Cadastrar(
+            PerguntaCriacaoViewModel perguntaViewModel,
+            IFormFile capaDaPergunta)
         {
             await perguntaInterface.CriarPergunta(perguntaViewModel, capaDaPergunta);
             return RedirectToAction(nameof(Index));
@@ -32,6 +34,21 @@ namespace TccForum.Controllers
         {
             var pergunta = await perguntaInterface.BuscarPerguntaPorId(id);
             return View(pergunta);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Editar(
+            Models.Entities.Pergunta pergunta,
+            IFormFile? capaDaPergunta)
+        {
+            await perguntaInterface.EditarPergunta(pergunta, capaDaPergunta);
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Remover(int id)
+        {
+            await perguntaInterface.RemoverPergunta(id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

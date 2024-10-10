@@ -1,16 +1,15 @@
-﻿@model PerguntaCriacaoViewModel
-@{
-    ViewData["Title"] = "Criação de pergunta";
-}
+﻿@model Pergunta
 
 <div class="container mt-5">
-    <form asp-controller="Pergunta" asp-action="Cadastrar" method="post" enctype="multipart/form-data" accept=".png,.jpeg">
-        <h2>Criação de pergunta</h2>
+    <form asp-controller="Pergunta" asp-action="Editar" method="post" enctype="multipart/form-data" accept=".png,.jpeg">
+        <h2>Edição de pergunta</h2>
+        <input type="hidden" asp-for="Id" />
         <div class="text-center">
-            <label for="arquivoDeImagem">
-                <img id="imagem" style="width: 300px; height: 180px" />
+            <label for="imageFile">
+                <img src="/assets/@Model.Capa" id="img" style="width: 300px; height: 180px" />
             </label>
         </div>
+        <input type="hidden" asp-for="Capa" />
         <div class="mb-1">
             <label class="form-label mt-3">Capa:</label>
             <input class="form-control shadow-none" type="file" id="arquivoDeImagem" name="capaDaPergunta" />
@@ -26,7 +25,7 @@
             <span class="text-danger" asp-validation-for="Descricao"></span>
         </div>
         <div class="btn-box d-flex mt-3">
-            <button class="btn btn-success w-50 mx-1" type="submit"><i class="bi bi-plus-circle"></i>Finalizar criação!!</button>
+            <button class="btn btn-success w-50 mx-1" type="submit"><i class="bi bi-plus-circle"></i>Finalizar edição!!</button>
             <a class="btn btn-info w-50" role="button" asp-controller="Pergunta" asp-action="Index"><i class="bi bi-arrow-left-circle"></i>Voltar</a>
         </div>
     </form>
