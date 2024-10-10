@@ -23,7 +23,9 @@
                             <img src="..." class="card-img-top" />
                         }
                         <div class="card-body">
-                            <h5 class="card-title">@pergunta.Titulo</h5>
+                            <a asp-action="Detalhar" asp-route-id="@pergunta.Id">
+                                <h5 class="card-title">@pergunta.Titulo</h5>
+                            </a>
                         </div>
                         <div class="card-body">
                             <a class="btn btn-warning w-100" asp-controller="Pergunta" asp-action="Editar" asp-route-id="@pergunta.Id">Editar</a>

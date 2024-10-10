@@ -30,6 +30,12 @@ namespace TccForum.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> Detalhar(int id)
+        {
+            var pergunta = await perguntaInterface.BuscarPerguntaPorId(id);
+            return View(pergunta);
+        }
+
         public async Task<IActionResult> Editar(int id)
         {
             var pergunta = await perguntaInterface.BuscarPerguntaPorId(id);

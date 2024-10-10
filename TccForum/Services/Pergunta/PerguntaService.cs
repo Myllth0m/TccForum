@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using TccForum.Data;
 using TccForum.Models.ViewModels;
 
@@ -56,8 +55,7 @@ namespace TccForum.Services.Pergunta
 
         public async Task<Models.Entities.Pergunta> BuscarPerguntaPorId(int id)
         {
-            var pergunta = await contexto.Perguntas.FindAsync(id);
-            
+            var pergunta = await contexto.Perguntas.AsNoTracking().FirstAsync(x => x.Id == id);
             return pergunta!;
         }
 

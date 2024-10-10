@@ -1,0 +1,18 @@
+﻿@model Pergunta
+
+<div class="container mt-5">
+    <h2>Pergunta - #@Model.Id</h2>
+    <input type="hidden" asp-for="Id" />
+    <div class="text-center">
+        <label for="imageFile">
+            <img src="/assets/@Model.Capa" id="img" style="width: 300px; height: 180px" />
+        </label>
+    </div>
+    <input type="hidden" asp-for="Capa" />
+    <div class="mb-1">
+        <h2>@Model.Titulo</h2>
+    </div>
+    <div class="mb-1">
+        <p>@Model.Descricao</p>
+    </div>
+</div>
