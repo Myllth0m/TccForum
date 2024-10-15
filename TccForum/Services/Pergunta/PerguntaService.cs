@@ -53,7 +53,13 @@ namespace TccForum.Services.Pergunta
             await contexto.SaveChangesAsync();
         }
 
-        public async Task<Models.Entities.Pergunta> BuscarPerguntaPorId(int id)
+        public async Task<Models.Entities.Pergunta> BuscarPerguntaComRespostasPorId(int id)
+        {
+            var perguntaComRespostas = await contexto.Perguntas.AsNoTracking().Include(x => x.Respostas).FirstAsync(x => x.Id == id);
+            return perguntaComRespostas;
+        }
+
+        public async Task<Models.Entities.Pergunta> BuscarPerguntaParaEdicaoPorId(int id)
         {
             var pergunta = await contexto.Perguntas.AsNoTracking().FirstAsync(x => x.Id == id);
             return pergunta!;

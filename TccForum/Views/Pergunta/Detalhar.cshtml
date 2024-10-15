@@ -19,6 +19,7 @@
         <p>@Model.Descricao</p>
     </div>
     <hr />
-    <partial name="../Resposta/_Cadastrar.cshtml" model="criacaoDeRespostaViewModel" />
+    <partial name="../Resposta/_Cadastrar.cshtml" model="@criacaoDeRespostaViewModel" />
     <hr />
+    <partial name="../Resposta/_Listar.cshtml" model="@Model.Respostas" />
 </div>

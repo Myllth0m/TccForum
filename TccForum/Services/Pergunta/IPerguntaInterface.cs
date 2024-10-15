@@ -6,7 +6,8 @@ namespace TccForum.Services.Pergunta
     {
         Task<List<Models.Entities.Pergunta>> BuscarTodasAsPerguntas();
         Task CriarPergunta(PerguntaCriacaoViewModel perguntaViewModel, IFormFile capaDaPergunta);
-        Task<Models.Entities.Pergunta> BuscarPerguntaPorId(int id);
+        Task<Models.Entities.Pergunta> BuscarPerguntaComRespostasPorId(int id);
+        Task<Models.Entities.Pergunta> BuscarPerguntaParaEdicaoPorId(int id);
         Task EditarPergunta(Models.Entities.Pergunta pergunta, IFormFile capaDaPergunta);
         Task RemoverPergunta(int id);
     }

@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Resposta>
+
+<h6 class="display-6">Respostas</h6>
+@if (Model != null && Model.Any())
+{
+    foreach (var resposta in Model)
+    {
+        <div class="mb-1">
+            <p>@resposta.Conteudo</p>
+        </div>
+        <hr />
+    }
+}
+else
+{
+    <div class="mb-1">
+        <p>Ainda não há respostas para essa pergunta</p>
+    </div>
+}
