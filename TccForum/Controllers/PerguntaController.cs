@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TccForum.Models.ViewModels;
 using TccForum.Services.Pergunta;
 
@@ -13,8 +14,10 @@ namespace TccForum.Controllers
             this.perguntaInterface = perguntaInterface;
         }
 
+        [Authorize]
         public async Task<IActionResult> Index()
         {
+            ViewBag.Nome = HttpContext.User.Identity.Name;
             var perguntas = await perguntaInterface.BuscarTodasAsPerguntas();
             return View(perguntas);
         }
