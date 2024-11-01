@@ -8,11 +8,11 @@ using TccForum.Models.ViewModels;
 
 namespace TccForum.Controllers
 {
-    public class UsuarioController : Controller
+    public class AccountController : Controller
     {
         private readonly AppDbContext context;
 
-        public UsuarioController(AppDbContext context)
+        public AccountController(AppDbContext context)
         {
             this.context = context;
         }

@@ -96,6 +96,14 @@ namespace TccForum.Services.Pergunta
         {
             var pergunta = await contexto.Perguntas.AsNoTracking().FirstAsync(x => x.Id == id);
 
+            if (pergunta.Capa != null)
+            {
+                var capaDaPerguntaExistente = storage + "\\assets\\" + pergunta.Capa;
+
+                if (File.Exists(capaDaPerguntaExistente))
+                    File.Delete(capaDaPerguntaExistente);
+            }
+
             contexto.Perguntas.Remove(pergunta);
             await contexto.SaveChangesAsync();
         }
