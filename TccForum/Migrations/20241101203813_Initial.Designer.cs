@@ -12,8 +12,8 @@ using TccForum.Data;
 namespace TccForum.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241029182204_CriacaoDeUsuario")]
-    partial class CriacaoDeUsuario
+    [Migration("20241101203813_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,7 +45,12 @@ namespace TccForum.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Perguntas");
                 });
@@ -65,17 +70,19 @@ namespace TccForum.Migrations
                     b.Property<int>("PerguntaId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("RespostaId")
+                    b.Property<int?>("RespostaPaiId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("RespostaPaiId")
+                    b.Property<int>("UsuarioId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PerguntaId");
 
-                    b.HasIndex("RespostaId");
+                    b.HasIndex("RespostaPaiId");
+
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Respostas");
                 });
@@ -113,17 +120,40 @@ namespace TccForum.Migrations
                     b.ToTable("Usuarios");
                 });
 
+            modelBuilder.Entity("TccForum.Models.Entities.Pergunta", b =>
+                {
+                    b.HasOne("TccForum.Models.Entities.Usuario", "Usuario")
+                        .WithMany("Perguntas")
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
             modelBuilder.Entity("TccForum.Models.Entities.Resposta", b =>
                 {
-                    b.HasOne("TccForum.Models.Entities.Pergunta", null)
+                    b.HasOne("TccForum.Models.Entities.Pergunta", "Pergunta")
                         .WithMany("Respostas")
                         .HasForeignKey("PerguntaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TccForum.Models.Entities.Resposta", null)
+                    b.HasOne("TccForum.Models.Entities.Resposta", "RespostaPai")
                         .WithMany("RespostasFilhas")
-                        .HasForeignKey("RespostaId");
+                        .HasForeignKey("RespostaPaiId");
+
+                    b.HasOne("TccForum.Models.Entities.Usuario", "Usuario")
+                        .WithMany("Respostas")
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Pergunta");
+
+                    b.Navigation("RespostaPai");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("TccForum.Models.Entities.Pergunta", b =>
@@ -134,6 +164,13 @@ namespace TccForum.Migrations
             modelBuilder.Entity("TccForum.Models.Entities.Resposta", b =>
                 {
                     b.Navigation("RespostasFilhas");
+                });
+
+            modelBuilder.Entity("TccForum.Models.Entities.Usuario", b =>
+                {
+                    b.Navigation("Perguntas");
+
+                    b.Navigation("Respostas");
                 });
 #pragma warning restore 612, 618
         }
