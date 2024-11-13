@@ -78,7 +78,7 @@ namespace TccForum.Controllers
                     else
                         claims.Add(new Claim(ClaimTypes.Role, "UsuarioPremium"));
 
-                    var claimsIdentity = new ClaimsIdentity(claims, "Cookies.Forum");
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
                     return RedirectToAction("Index", "Pergunta");
