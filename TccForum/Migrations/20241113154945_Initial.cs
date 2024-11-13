@@ -56,9 +56,8 @@ namespace TccForum.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Conteudo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UsuarioId = table.Column<int>(type: "int", nullable: false),
-                    PerguntaId = table.Column<int>(type: "int", nullable: false),
-                    RespostaPaiId = table.Column<int>(type: "int", nullable: true)
+                    UsuarioId = table.Column<int>(type: "int", nullable: true),
+                    PerguntaId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -70,16 +69,10 @@ namespace TccForum.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Respostas_Respostas_RespostaPaiId",
-                        column: x => x.RespostaPaiId,
-                        principalTable: "Respostas",
-                        principalColumn: "Id");
-                    table.ForeignKey(
                         name: "FK_Respostas_Usuarios_UsuarioId",
                         column: x => x.UsuarioId,
                         principalTable: "Usuarios",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -91,11 +84,6 @@ namespace TccForum.Migrations
                 name: "IX_Respostas_PerguntaId",
                 table: "Respostas",
                 column: "PerguntaId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Respostas_RespostaPaiId",
-                table: "Respostas",
-                column: "RespostaPaiId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Respostas_UsuarioId",

@@ -8,5 +8,6 @@
         public string NomeDoUsuario { get; set; }
         public string Senha { get; set; }
         public string ConfirmarSenha { get; set; }
+        public string TipoDeUsuario { get; set; }
     }
 }

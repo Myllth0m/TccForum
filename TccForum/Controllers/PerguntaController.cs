@@ -14,7 +14,6 @@ namespace TccForum.Controllers
             this.perguntaInterface = perguntaInterface;
         }
 
-        [Authorize]
         public async Task<IActionResult> Index()
         {
             ViewBag.Nome = HttpContext.User.Identity.Name;
@@ -22,6 +21,7 @@ namespace TccForum.Controllers
             return View(perguntas);
         }
 
+        [Authorize(Policy = "UsuarioPadrao")]
         public IActionResult Cadastrar() => View();
 
         [HttpPost]

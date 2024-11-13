@@ -12,8 +12,8 @@ using TccForum.Data;
 namespace TccForum.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241101203813_Initial")]
-    partial class Initial
+    [Migration("20241113163205_EscopoDoUsuario")]
+    partial class EscopoDoUsuario
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -70,17 +70,12 @@ namespace TccForum.Migrations
                     b.Property<int>("PerguntaId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("RespostaPaiId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UsuarioId")
+                    b.Property<int?>("UsuarioId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PerguntaId");
-
-                    b.HasIndex("RespostaPaiId");
 
                     b.HasIndex("UsuarioId");
 
@@ -96,6 +91,10 @@ namespace TccForum.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Escopo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -139,19 +138,11 @@ namespace TccForum.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TccForum.Models.Entities.Resposta", "RespostaPai")
-                        .WithMany("RespostasFilhas")
-                        .HasForeignKey("RespostaPaiId");
-
                     b.HasOne("TccForum.Models.Entities.Usuario", "Usuario")
                         .WithMany("Respostas")
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId");
 
                     b.Navigation("Pergunta");
-
-                    b.Navigation("RespostaPai");
 
                     b.Navigation("Usuario");
                 });
@@ -159,11 +150,6 @@ namespace TccForum.Migrations
             modelBuilder.Entity("TccForum.Models.Entities.Pergunta", b =>
                 {
                     b.Navigation("Respostas");
-                });
-
-            modelBuilder.Entity("TccForum.Models.Entities.Resposta", b =>
-                {
-                    b.Navigation("RespostasFilhas");
                 });
 
             modelBuilder.Entity("TccForum.Models.Entities.Usuario", b =>

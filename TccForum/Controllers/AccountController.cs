@@ -39,6 +39,7 @@ namespace TccForum.Controllers
                     Email = usuarioCadastroViewModel.Email,
                     Login = usuarioCadastroViewModel.NomeDoUsuario,
                     Senha = usuarioCadastroViewModel.Senha,
+                    Escopo = usuarioCadastroViewModel.TipoDeUsuario,
                 };
 
                 context.Usuarios.Add(usuario);
@@ -59,7 +60,7 @@ namespace TccForum.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(AcessoViewModel acessoViewModel)
+        public async Task<IActionResult> Login(AcessoViewModel acessoViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -69,19 +70,29 @@ namespace TccForum.Controllers
                 {
                     var claims = new List<Claim>
                     {
-                        new Claim(ClaimTypes.Name, usuario.Email),
-                        new Claim("Nome", usuario.PrimeiroNome),
-                        new Claim(ClaimTypes.Role, "Usuario"),
+                        new Claim(ClaimTypes.Name, usuario.PrimeiroNome + " " + usuario.UltimoNome),
                     };
 
-                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                    if (usuario.Escopo == "UsuarioPadrao")
+                        claims.Add(new Claim(ClaimTypes.Role, "UsuarioPadrao"));
+                    else
+                        claims.Add(new Claim(ClaimTypes.Role, "UsuarioPremium"));
+
+                    var claimsIdentity = new ClaimsIdentity(claims, "Cookies.Forum");
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
                     return RedirectToAction("Index", "Pergunta");
                 }
             }
 
             return View(acessoViewModel);
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }
