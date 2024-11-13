@@ -6,6 +6,7 @@
     foreach (var resposta in Model)
     {
         <div class="mb-1">
+            <p>@(resposta.Usuario.PrimeiroNome + " " + resposta.Usuario.UltimoNome)</p>
             <p>@resposta.Conteudo</p>
         </div>
         <hr />

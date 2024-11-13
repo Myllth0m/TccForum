@@ -71,6 +71,8 @@ namespace TccForum.Controllers
                     var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, usuario.PrimeiroNome + " " + usuario.UltimoNome),
+                        new Claim(ClaimTypes.Email, usuario.Email),
+                        new Claim("usuarioId", usuario.Id.ToString()),
                     };
 
                     if (usuario.Escopo == "UsuarioPadrao")

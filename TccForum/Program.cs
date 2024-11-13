@@ -28,6 +28,7 @@ builder.Services.AddAuthorizationBuilder()
     .AddPolicy("UsuarioPadrao", policy => policy.RequireRole("UsuarioPadrao"))
     .AddPolicy("UsuarioPremium", policy => policy.RequireClaim("UsuarioPremium"));
 
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IPerguntaInterface, PerguntaService>();
 builder.Services.AddScoped<IRespostaInterface, RespostaService>();
 

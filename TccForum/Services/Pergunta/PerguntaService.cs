@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using TccForum.Data;
 using TccForum.Models.ViewModels;
 
@@ -6,11 +7,16 @@ namespace TccForum.Services.Pergunta
 {
     public class PerguntaService : IPerguntaInterface
     {
+        private readonly ClaimsPrincipal usuario;
         private readonly AppDbContext contexto;
         private readonly string storage;
 
-        public PerguntaService(AppDbContext contexto, IWebHostEnvironment storage)
+        public PerguntaService(
+            IHttpContextAccessor httpContextAccessor,
+            AppDbContext contexto,
+            IWebHostEnvironment storage)
         {
+            this.usuario = httpContextAccessor.HttpContext!.User;
             this.contexto = contexto;
             this.storage = storage.WebRootPath;
         }
@@ -34,7 +40,9 @@ namespace TccForum.Services.Pergunta
 
         public async Task<List<Models.Entities.Pergunta>> BuscarTodasAsPerguntas()
         {
-            var perguntas = await contexto.Perguntas.ToListAsync();
+            var perguntas = await contexto.Perguntas
+                .ToListAsync();
+
             return perguntas;
         }
 
@@ -43,6 +51,7 @@ namespace TccForum.Services.Pergunta
             var caminhoDaImagem = GerarCaminhoDoArquivo(capa);
             var novaPergunta = new Models.Entities.Pergunta
             {
+                UsuarioId = int.Parse(usuario.FindFirst("usuarioId")!.Value),
                 Capa = caminhoDaImagem,
                 Titulo = perguntaViewModel.Titulo,
                 Descricao = perguntaViewModel.Descricao,
@@ -55,19 +64,30 @@ namespace TccForum.Services.Pergunta
 
         public async Task<Models.Entities.Pergunta> BuscarPerguntaComRespostasPorId(int id)
         {
-            var perguntaComRespostas = await contexto.Perguntas.AsNoTracking().Include(x => x.Respostas).FirstAsync(x => x.Id == id);
+            var perguntaComRespostas = await contexto.Perguntas
+                .AsNoTracking()
+                .Include(x => x.Respostas)
+                    .ThenInclude(y => y.Usuario)
+                .FirstAsync(x => x.Id == id);
+
             return perguntaComRespostas;
         }
 
         public async Task<Models.Entities.Pergunta> BuscarPerguntaParaEdicaoPorId(int id)
         {
-            var pergunta = await contexto.Perguntas.AsNoTracking().FirstAsync(x => x.Id == id);
+            var pergunta = await contexto.Perguntas
+                .AsNoTracking()
+                .FirstAsync(x => x.Id == id);
+
             return pergunta!;
         }
 
         public async Task EditarPergunta(Models.Entities.Pergunta perguntaEditada, IFormFile capaDaPergunta)
         {
-            var pergunta = await contexto.Perguntas.AsNoTracking().FirstAsync(x => x.Id == perguntaEditada.Id);
+            var pergunta = await contexto.Perguntas
+                .AsNoTracking()
+                .FirstAsync(x => x.Id == perguntaEditada.Id);
+
             var caminhoDaImagem = string.Empty;
 
             if (capaDaPergunta != null)
@@ -94,7 +114,9 @@ namespace TccForum.Services.Pergunta
 
         public async Task RemoverPergunta(int id)
         {
-            var pergunta = await contexto.Perguntas.AsNoTracking().FirstAsync(x => x.Id == id);
+            var pergunta = await contexto.Perguntas
+                .AsNoTracking()
+                .FirstAsync(x => x.Id == id);
 
             if (pergunta.Capa != null)
             {
