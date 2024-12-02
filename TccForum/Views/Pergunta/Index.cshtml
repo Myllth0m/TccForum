@@ -17,11 +17,11 @@
                     <div class="card flex-row border-hover-dark">
                         @if (pergunta.Capa != null)
                         {
-                            <img class="card-img-xl-left" src="/assets/@pergunta.Capa" />
+                            <img class="card-img-left card-img-xl-left" src="/assets/@pergunta.Capa" alt="image-@(pergunta.Id)" />
                         }
                         else
                         {
-                            <img class="card-img-xl-left" src="~/assets/no-image.jpg" />
+                            <img class="card-img-left card-img-xl-left" src="~/assets/no-image.jpg" alt="image-default" />
                         }
                         <div class="card-body">
                             <h4 class="card-title h5 h4-sm">@pergunta.Titulo</h4>
