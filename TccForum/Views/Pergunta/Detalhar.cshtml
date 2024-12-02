@@ -3,23 +3,19 @@
     var criacaoDeRespostaViewModel = new RespostaDaPerguntaCriacaoViewModel() { PerguntaId = Model.Id };
 }
 
-<div class="container mt-5">
-    <h1>Pergunta - #@Model.Id</h1>
-    <input type="hidden" asp-for="Id" />
-    <div class="text-center">
-        <label for="imageFile">
-            <img src="/assets/@Model.Capa" id="img" style="width: 300px; height: 180px" />
-        </label>
+<div class="row-1">
+    <div class="card w-100 mb-3">
+        <div class="card-body">
+            <div class="bg-cover w-100" style="background-image: url(/assets/@Model.Capa);background-repeat: no-repeat;background-position: top left;height: 400px;"></div>
+        </div>
+        <div class="card-body">
+            <h2 class="text-body px-gutter-1">@Model.Titulo</h2>
+        </div>
+        <div class="card-footer">
+            <partial name="../Resposta/_Cadastrar.cshtml" model="@criacaoDeRespostaViewModel" />
+        </div>
+        <div class="card-footer p-0">
+            <partial name="../Resposta/_Listar.cshtml" model="@Model.Respostas" />
+        </div>
     </div>
-    <input type="hidden" asp-for="Capa" />
-    <div class="mb-1">
-        <h2>@Model.Titulo</h2>
-    </div>
-    <div class="mb-1">
-        <p>@Model.Descricao</p>
-    </div>
-    <hr />
-    <partial name="../Resposta/_Cadastrar.cshtml" model="@criacaoDeRespostaViewModel" />
-    <hr />
-    <partial name="../Resposta/_Listar.cshtml" model="@Model.Respostas" />
 </div>

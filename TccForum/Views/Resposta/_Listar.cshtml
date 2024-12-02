@@ -4,15 +4,14 @@
 {
     foreach (var resposta in Model)
     {
-        <div class="card">
-            <div class="card border-0 flex-row">
-                <img class="m-1" src="/assets/no-avatar.jpg" width="46" height="46" />
-                <div class="card-body p-1">
-                    <h6 class="h6 mt-gutter-1 mb-0">@(resposta.Usuario.PrimeiroNome + " " + resposta.Usuario.UltimoNome)</h6>
-                    <p class="text-secondary mt-1 mt-gutter-sm-0">@resposta.Conteudo</p>
-                </div>
+        <div class="card border-0 px-gutter-2 py-gutter-1 flex-row">
+            <img class="m-1" src="/assets/no-avatar.jpg" width="46" height="46" />
+            <div class="card-body p-1">
+                <h6 class="h6 mb-gutter-2 mb-gutter-sm-1">@(resposta.Usuario.PrimeiroNome + " " + resposta.Usuario.UltimoNome)</h6>
+                <p class="text-secondary mt-1 mt-gutter-sm-0">@resposta.Conteudo</p>
             </div>
         </div>
+        <hr class="m-0" />
     }
 }
 else

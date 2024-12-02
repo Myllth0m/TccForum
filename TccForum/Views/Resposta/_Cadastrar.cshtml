@@ -1,9 +1,8 @@
 ﻿@model RespostaDaPerguntaCriacaoViewModel
 
-<h2 class="display-6">Envie sua resposta</h2>
 <form asp-controller="Resposta" asp-action="Cadastrar" method="post">
     <input type="hidden" asp-for="PerguntaId" />
-    <textarea class="form-control shadow-none" type="text" asp-for="Conteudo" rows="5" style="resize: none"></textarea>
+    <textarea class="form-control shadow-none" type="text" asp-for="Conteudo"></textarea>
     <span class="text-danger" asp-validation-for="Conteudo"></span>
-    <button type="submit" class="btn btn-primary mt-1">Enviar!!</button>
+    <button type="submit" class="btn btn-primary mt-1">Responder</button>
 </form>
