@@ -1,15 +1,18 @@
 ﻿@model IEnumerable<Resposta>
 
-<h6 class="display-6">Respostas</h6>
 @if (Model != null && Model.Any())
 {
     foreach (var resposta in Model)
     {
-        <div class="mb-1">
-            <p>@(resposta.Usuario.PrimeiroNome + " " + resposta.Usuario.UltimoNome)</p>
-            <p>@resposta.Conteudo</p>
+        <div class="card">
+            <div class="card border-0 flex-row">
+                <img class="m-1" src="/assets/no-avatar.jpg" width="46" height="46" />
+                <div class="card-body p-1">
+                    <h6 class="h6 mt-gutter-1 mb-0">@(resposta.Usuario.PrimeiroNome + " " + resposta.Usuario.UltimoNome)</h6>
+                    <p class="text-secondary mt-1 mt-gutter-sm-0">@resposta.Conteudo</p>
+                </div>
+            </div>
         </div>
-        <hr />
     }
 }
 else
