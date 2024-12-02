@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/TccForum.styles.css" asp-append-version="true" />
     @* postboot - lib ui css *@
-    <link href="~/postboot/css/postboot.min.css" rel="stylesheet" />
+    <link href="~/postboot/css/postboot.css" rel="stylesheet" />
 </head>
 <body>
     <header>
@@ -35,13 +35,13 @@
     </header>
     <div class="container-fluid container-xl">
         <div class="row">
-            <div class="col-md col-md-auto col-lg-2"></div>
+            <div class="col-md col-md-auto col-lg-2 bg-dark-80"></div>
             <div class="col-12 col-md-9 col-lg-8">
                 <main role="main">
                     @RenderBody()
                 </main>
             </div>
-            <div class="col-lg-2 d-none d-lg-block"></div>
+            <div class="col-lg-2 d-none d-lg-block bg-dark-80"></div>
         </div>
     </div>
 

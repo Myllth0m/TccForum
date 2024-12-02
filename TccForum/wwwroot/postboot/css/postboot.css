@@ -12899,8 +12899,8 @@
     border-radius: 0 calc(0.25rem - 1px) calc(0.25rem - 1px) 0; } }
 @media (min-width: 1200px) {
   .card-img-xl-left {
-    width: auto;
-    height: 100%;
+    width: 250px;
+    max-height: 150px;
     border-radius: calc(0.25rem - 1px) 0 0 calc(0.25rem - 1px); }
 
   .card-img-xl-right {
