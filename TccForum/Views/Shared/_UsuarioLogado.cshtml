@@ -1,11 +1,11 @@
 ﻿@if (Context.User.Identity.Name != null)
 {
-    <form asp-controller="Account" asp-action="LogOut" method="post" id="logOutForm" class="navbar-right">
-        <ul class="nav navbar-nav navbar-right">
+    <ul class="nav navbar-nav navbar-right">
+        <form asp-controller="Account" asp-action="LogOut" method="post" id="logOutForm" class="navbar-right">
             <li class="nav-link">Olá, @Context.User.Identity.Name!</li>
             <button type="submit" class="btn btn-link nav-link">| Sair</button>
-        </ul>
-    </form>
+        </form>
+    </ul>
 }
 else
 {

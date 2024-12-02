@@ -26,8 +26,8 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Pergunta" asp-action="Index">Perguntas</a>
                         </li>
                     </ul>
+                    @await Html.PartialAsync("_UsuarioLogado")
                 </div>
-                @await Html.PartialAsync("_UsuarioLogado")
             </div>
         </nav>
     </header>
