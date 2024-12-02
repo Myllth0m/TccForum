@@ -3,37 +3,56 @@
     ViewData["Title"] = "Lista de pergunta";
 }
 
-<div class="py-5">
-    <div class="container">
-        <div class="text-center mb-5">
-            <a class="btn btn-success" asp-controller="Pergunta" asp-action="Cadastrar">Criar pergunta</a>
-        </div>
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-0">
-            @if (Model != null && Model.Any())
-            {
-                @foreach (var pergunta in Model)
-                {
-                    <div class="card mx-3 my-3 p-2" style="width: 12rem">
-                        @if (pergunta.Capa != null)
-                        {
-                            <img src="/assets/@pergunta.Capa" class="card-img-top" style="width: 175px; height: 158px" />
-                        }
-                        else
-                        {
-                            <img src="..." class="card-img-top" />
-                        }
-                        <div class="card-body">
-                            <a asp-action="Detalhar" asp-route-id="@pergunta.Id">
-                                <h5 class="card-title">@pergunta.Titulo</h5>
-                            </a>
-                        </div>
-                        <div class="card-body">
-                            <a class="btn btn-warning w-100" asp-controller="Pergunta" asp-action="Editar" asp-route-id="@pergunta.Id">Editar</a>
-                            <a class="btn btn-danger w-100" asp-controller="Pergunta" asp-action="Remover" asp-route-id="@pergunta.Id">Remover</a>
-                        </div>
-                    </div>
-                }
-            }
-        </div>
+<div class="card flex-row">
+    <img class="card-img-xxl-left" src="~/assets/no-image.jpg" width="250" />
+    <div class="card-body">
+        <h4 class="card-title h5 h4-sm">Left image</h4>
+        <p class="card-text">Example text</p>
     </div>
+</div>
+<div class="card flex-row">
+    <img class="card-img-xxl-left" src="~/assets/no-image.jpg" width="250" />
+    <div class="card-body">
+        <h4 class="card-title h5 h4-sm">Left image</h4>
+        <p class="card-text">Example text</p>
+    </div>
+</div>
+<div class="card flex-row">
+    <img class="card-img-xxl-left" src="~/assets/no-image.jpg" width="250" />
+    <div class="card-body">
+        <h4 class="card-title h5 h4-sm">Left image</h4>
+        <p class="card-text">Example text</p>
+    </div>
+</div>
+<div class="text-center mb-5">
+    <a class="btn btn-success" asp-controller="Pergunta" asp-action="Cadastrar">Criar pergunta</a>
+</div>
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-0">
+    @if (Model != null && Model.Any())
+    {
+
+        @foreach (var pergunta in Model)
+        {
+
+            <div class="card mx-3 my-3 p-2" style="width: 12rem">
+                @if (pergunta.Capa != null)
+                {
+                    <img src="/assets/@pergunta.Capa" class="card-img-top" style="width: 175px; height: 158px" />
+                }
+                else
+                {
+                    <img src="..." class="card-img-top" />
+                }
+                <div class="card-body">
+                    <a asp-action="Detalhar" asp-route-id="@pergunta.Id">
+                        <h5 class="card-title">@pergunta.Titulo</h5>
+                    </a>
+                </div>
+                <div class="card-body">
+                    <a class="btn btn-warning w-100" asp-controller="Pergunta" asp-action="Editar" asp-route-id="@pergunta.Id">Editar</a>
+                    <a class="btn btn-danger w-100" asp-controller="Pergunta" asp-action="Remover" asp-route-id="@pergunta.Id">Remover</a>
+                </div>
+            </div>
+        }
+    }
 </div>

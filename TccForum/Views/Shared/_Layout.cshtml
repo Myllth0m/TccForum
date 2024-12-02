@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/TccForum.styles.css" asp-append-version="true" />
+    @* postboot - lib ui css *@
+    <link href="~/postboot/css/postboot.min.css" rel="stylesheet" />
 </head>
 <body>
     <header>
@@ -31,10 +33,16 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+    <div class="container-fluid container-xl">
+        <div class="row">
+            <div class="col-md col-md-auto col-lg-2"></div>
+            <div class="col-12 col-md-9 col-lg-8">
+                <main role="main">
+                    @RenderBody()
+                </main>
+            </div>
+            <div class="col-lg-2 d-none d-lg-block"></div>
+        </div>
     </div>
 
     <footer class="border-top footer text-muted">
@@ -44,6 +52,7 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/postboot/js/postboot.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
