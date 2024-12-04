@@ -3,12 +3,13 @@
     ViewData["Title"] = "Criação de pergunta";
 }
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css" integrity="sha512-UtLOu9C7NuThQhuXXrGwx9Jb/z9zPQJctuAgNUBK3Z6kkSYT9wJ+2+dh6klS+TDBCV9kNPBbAxbVD+vCcfGPaA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <div class="container mt-5">
     <form asp-controller="Pergunta" asp-action="Cadastrar" method="post" enctype="multipart/form-data" accept=".png,.jpeg">
         <h2>Criação de pergunta</h2>
         <div class="text-center">
             <label for="arquivoDeImagem">
-                <img id="imagem" style="width: 300px; height: 180px" />
+                <img id="imagem" class="w-100" />
             </label>
         </div>
         <div class="mb-1">
@@ -32,24 +33,63 @@
     </form>
 </div>
 
+@* Modal *@
+<div class="modal fade" id="modal-recorte-de-imagem" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ajustar Imagem</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <img id="imagem-preview" style="display: block; max-width: 100%; height: 100%" />
+                </div>
+                <div class="row">
+                    <div class="preview-crop"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js" integrity="sha512-JyCZjCOZoyeQZSd5+YEAcFgz2fowJ1F1hyJOXgtKu4llIa0KneLcidn5bwfutiehUTiOuK87A986BZJMko0eWQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-    const entradaDeArquivo = document.querySelector('#arquivoDeImagem')
+    $(document).ready(function () {
+        const imagem = document.querySelector('#imagem')
+        let imagemPreview = document.querySelector('#imagem-preview')
+        let cropper
 
-    entradaDeArquivo.addEventListener('change', function (e) {
-        const alvoDeEntrada = e.target
-        const arquivo = alvoDeEntrada.files[0]
+        $('#arquivoDeImagem').change(function (e) {
+            const arquivo = e.target.files[0]
 
-        if (arquivo) {
-            const leitor = new FileReader()
+            let feito = function (url) {
+                imagem.src = URL.createObjectURL(e.target.files[0])
+                $('#modal-recorte-de-imagem').modal('show')
+            }
 
-            leitor.addEventListener('load', function (e) {
-                const alvoDoLeitor = e.target
-                const imagem = document.querySelector('#imagem')
+            if (arquivo) {
+                const leitor = new FileReader()
 
-                imagem.src = alvoDoLeitor.result
+                leitor.onload = function (e) {
+                    feito(leitor.result)
+                }
+
+                leitor.readAsDataURL(arquivo)
+            }
+        })
+
+        $('#modal-recorte-de-imagem').on('shown.bs.modal', function (e) {
+            cropper = new Cropper(imagemPreview, {
+                aspectRatio: 1,
+                viewMode: 3,
+                preview: '.preview-crop',
             })
-
-            leitor.readAsDataURL(arquivo)
-        }
+        }).on('hidden.bs.modal', function (e) {
+            cropper.destroy()
+            cropper = null
+        })
     })
 </script>
