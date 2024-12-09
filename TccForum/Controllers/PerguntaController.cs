@@ -21,7 +21,7 @@ namespace TccForum.Controllers
             return View(perguntas);
         }
 
-        [Authorize(Policy = "UsuarioPadrao")]
+        [Authorize(Policy = "UsuarioPremium")]
         public IActionResult Cadastrar() => View();
 
         [HttpPost]

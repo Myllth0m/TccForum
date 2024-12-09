@@ -26,7 +26,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy("UsuarioPadrao", policy => policy.RequireRole("UsuarioPadrao"))
-    .AddPolicy("UsuarioPremium", policy => policy.RequireClaim("UsuarioPremium"));
+    .AddPolicy("UsuarioPremium", policy => policy.RequireRole("UsuarioPremium"));
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IPerguntaInterface, PerguntaService>();
