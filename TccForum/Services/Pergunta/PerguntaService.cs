@@ -23,6 +23,9 @@ namespace TccForum.Services.Pergunta
 
         private string GerarCaminhoDoArquivo(IFormFile capa)
         {
+            if (capa == null)
+                return "no-image.jpg";
+            
             var dataDaImagem = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "-");
             var caminhoDaImagem = dataDaImagem + "-" + capa.FileName.Trim().Replace(" ", "").ToLower();
             var pastaDeImagens = storage + "\\assets\\";
