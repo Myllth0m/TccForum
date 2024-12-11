@@ -1,18 +1,32 @@
 ﻿@model Pergunta
+@{
+    ViewData["Title"] = "Edição de pergunta";
+}
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css"
+      integrity="sha512-UtLOu9C7NuThQhuXXrGwx9Jb/z9zPQJctuAgNUBK3Z6kkSYT9wJ+2+dh6klS+TDBCV9kNPBbAxbVD+vCcfGPaA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"
+        integrity="sha512-JyCZjCOZoyeQZSd5+YEAcFgz2fowJ1F1hyJOXgtKu4llIa0KneLcidn5bwfutiehUTiOuK87A986BZJMko0eWQ=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer">
+</script>
 
 <div class="container mt-5">
     <form asp-controller="Pergunta" asp-action="Editar" method="post" enctype="multipart/form-data" accept=".png,.jpeg">
         <h2>Edição de pergunta</h2>
         <input type="hidden" asp-for="Id" />
         <div class="text-center">
-            <label for="imageFile">
-                <img src="/assets/@Model.Capa" id="img" style="width: 300px; height: 180px" />
-            </label>
+            <div>
+                <img class="w-100" src="/assets/@Model.Capa" id="imageCropped" />
+            </div>
         </div>
         <input type="hidden" asp-for="Capa" />
         <div class="mb-1">
             <label class="form-label mt-3">Capa:</label>
-            <input class="form-control shadow-none" type="file" id="arquivoDeImagem" name="capaDaPergunta" />
+            <input class="form-control shadow-none" type="file" id="inputImage" name="capaDaPergunta" />
         </div>
         <div class="mb-1">
             <label class="form-label mt-3">Título:</label>
@@ -31,24 +45,77 @@
     </form>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="cropModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <img id="imagePreview" src="" class="w-100" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="buttonCloseModal" type="button" class="btn btn-secondary">Close</button>
+                <button id="buttonCropImage" type="button" class="btn btn-primary">Crop image</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
-    const entradaDeArquivo = document.querySelector('#arquivoDeImagem')
+    $(document).ready(function () {
+        let cropper
+        let cropModal = document.getElementById('cropModal')
+        let inputImage = document.getElementById('inputImage')
+        let imagePreview = document.getElementById('imagePreview')
+        let imageCropped = document.getElementById('imageCropped')
+        let buttonCropImage = document.getElementById('buttonCropImage')
+        let buttonCloseModal = document.getElementById('buttonCloseModal')
+        const instanceCropModal = new bootstrap.Modal(cropModal, { backdrop: 'static', keyboard: false })
 
-    entradaDeArquivo.addEventListener('change', function (e) {
-        const alvoDeEntrada = e.target
-        const arquivo = alvoDeEntrada.files[0]
+        inputImage.addEventListener('change', function (event) {
+            let file = event.target.files[0]
 
-        if (arquivo) {
-            const leitor = new FileReader()
+            if (file) {
+                const reader = new FileReader()
 
-            leitor.addEventListener('load', function (e) {
-                const alvoDoLeitor = e.target
-                const imagem = document.querySelector('#imagem')
+                reader.onload = function (event) {
+                    imagePreview.src = URL.createObjectURL(file)
+                }
 
-                imagem.src = alvoDoLeitor.result
+                reader.readAsDataURL(file)
+            }
+
+            instanceCropModal.toggle()
+        })
+
+        cropModal.addEventListener('shown.bs.modal', function () {
+            cropper = new Cropper(imagePreview, {
+                aspectRatio: 16 / 9,
+                viewMode: 3,
+                preview: '.preview'
             })
+        })
 
-            leitor.readAsDataURL(arquivo)
-        }
+        cropModal.addEventListener('hidden.bs.modal', function () {
+            cropper.destroy()
+        })
+
+        buttonCropImage.addEventListener('click', function () {
+            if (cropper.getCroppedCanvas()) {
+                cropper.getCroppedCanvas().toBlob(function (blob) {
+                    let url = cropper.getCroppedCanvas().toDataURL()
+
+                    imageCropped.removeAttribute('src')
+                    imageCropped.setAttribute('src', url)
+                })
+            }
+
+            instanceCropModal.toggle()
+        })
+
+        buttonCloseModal.addEventListener('click', function() {
+            instanceCropModal.toggle()
+        })
     })
 </script>
